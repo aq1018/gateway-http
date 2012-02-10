@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "gateway-http"
   gem.homepage = "http://github.com/aq1018/gateway-http"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{ Gateway wrapper client for Net::HTTP }
+  gem.description = %Q{ Gateway wrapper client for Net::HTTP }
   gem.email = "aq1018@gmail.com"
   gem.authors = ["Aaron Qian"]
   # dependencies defined in Gemfile
@@ -31,10 +31,6 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
-end
 
 task :default => :spec
 

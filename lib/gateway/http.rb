@@ -17,7 +17,7 @@ module Gateway
 
     # It's safe to specify all actions because non-idempotent requests
     # will skip retry automatically
-    categorize_error Timeout::Error, Net::HTTPError, Net::HTTP::Pipeline::ResponseError
+    categorize_error Timeout::Error, Net::HTTPError, Net::HTTP::Pipeline::ResponseError,
                      :as => :retry, :for => :all
 
     def self.normalize_uri uri

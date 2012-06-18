@@ -1,7 +1,6 @@
 module Gateway
   class HTTP < Gateway::Base
     # purge connection that is stuck in bad state
-    # PipelineError should never happen in ATTI
     categorize_error(Net::HTTP::Pipeline::PipelineError, {
       :as   => :retry,
       :for  => :pipeline
@@ -66,6 +65,11 @@ module Gateway
 
     def absolute_url(req)
       address + req.path
+    end
+
+    def head(path, header=nil, opts={})
+      req = prepare_request(:head, path, nil, header)
+      request(req, opts)
     end
 
     def get(path, header=nil, opts={})
@@ -137,11 +141,21 @@ module Gateway
       req.is_a?(Net::HTTP::Post) || req.is_a?(Net::HTTP::Put)
     end
 
+    def read_timeout
+      options[:read_timeout]
+    end
+
+    def open_timeout
+      options[:open_timeout]
+    end
+
     protected
 
     def connect
       conn = Net::HTTP.new(host, port)
       conn.use_ssl = use_ssl
+      conn.read_timeout = read_timeout if read_timeout
+      conn.open_timeout = open_timeout if open_timeout
       conn
     end
 

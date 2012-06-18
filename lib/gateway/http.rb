@@ -149,7 +149,16 @@ module Gateway
       options[:open_timeout]
     end
 
+
     protected
+
+    def success_status(resp)
+      resp.code
+    end
+
+    def success_message(resp)
+      resp.message
+    end
 
     def connect
       conn = Net::HTTP.new(host, port)

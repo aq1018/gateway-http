@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "gateway-http"
-  s.version = "0.1.2"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Aaron Qian"]
-  s.date = "2012-02-15"
+  s.date = "2012-06-18"
   s.description = " Gateway wrapper client for Net::HTTP "
   s.email = "aq1018@gmail.com"
   s.extra_rdoc_files = [
@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/aq1018/gateway-http"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.15"
   s.summary = "Gateway wrapper client for Net::HTTP"
 
   if s.respond_to? :specification_version then

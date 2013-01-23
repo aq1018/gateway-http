@@ -119,7 +119,7 @@ module Gateway
     end
 
     def prepare_request(method, path, body, header)
-      klass = "Net::HTTP::#{method.to_s.classify}".constantize
+      klass = Net::HTTP.const_get method.to_s.capitalize
 
       header = self.header.merge(header || {})
       req   = klass.new path, header

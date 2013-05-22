@@ -83,12 +83,12 @@ module Gateway
     end
 
     def put(path, body=nil, header=nil, opts={})
-      req= prepare_request(:put, path, body, header)
+      req = prepare_request(:put, path, body, header)
       request(req, opts)
     end
 
     def delete(path, header=nil, opts={})
-      prepare_request(:delete, path, nil, header)
+      req = prepare_request(:delete, path, nil, header)
       request(req, opts)
     end
 

@@ -153,11 +153,11 @@ module Gateway
     protected
 
     def success_status(resp)
-      resp.code
+      resp.respond_to?(:code) ? resp.code : super
     end
 
     def success_message(resp)
-      resp.message
+      resp.respond_to?(:message) ? resp.message : super
     end
 
     def connect

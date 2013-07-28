@@ -36,13 +36,19 @@ module Gateway
       @host     = @address.host
       @port     = @address.port
       @header   = opts[:header] || {}
+
+      #TCP socket optimizations
+      @socket_options = []
+      @socket_options << [Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1] if
+                          Socket.const_defined? :TCP_NODELAY
+      @socket_options << opts[:socket_options] if opts[:socket_options]
     end
 
     def pipeline(requests, opts={}, &block)
       msg = requests.map{|r| absolute_url(r).to_s }.join(',')
 
       execute('pipeline', msg, opts) do |conn|
-        conn.start unless conn.started?
+        start conn unless conn.started?
         conn.pipeline(requests.dup, &block)
       end
     end
@@ -56,7 +62,7 @@ module Gateway
       action = req.method.downcase.to_sym
 
       execute(action, absolute_url(req), opts) do |conn|
-        conn.start unless conn.started?
+        start conn unless conn.started?
         rsp = conn.request(req)
         validate_response(req, rsp, valid_responses(opts)) if validate_response?(opts)
         rsp
@@ -165,7 +171,20 @@ module Gateway
       conn.use_ssl = use_ssl
       conn.read_timeout = read_timeout if read_timeout
       conn.open_timeout = open_timeout if open_timeout
+
+      start conn
+
       conn
+    end
+
+    def start conn
+      conn.start
+
+      socket = conn.instance_variable_get :@socket
+
+      @socket_options.each do |option|
+        socket.io.setsockopt(*option)
+      end
     end
 
     def disconnect(conn)
@@ -175,6 +194,7 @@ module Gateway
 
     def reconnect(conn)
       disconnect(conn)
+      start conn
       conn
     end
   end
